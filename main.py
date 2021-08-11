@@ -2,6 +2,7 @@ import random
 import time
 import pygame
 import math
+
 ker_time = 0
 
 
@@ -39,9 +40,11 @@ def blit_ker():
 
 
 def stugum(a):
-    if (ker[bjij[a]['amenamotik_num']]['x'] - bjij[a]['x'])**2 + (ker[bjij[a]['amenamotik_num']]['y'] - bjij[a]['y'])**2 > 5:
+    if (ker[bjij[a]['amenamotik_num']]['x'] - bjij[a]['x']) ** 2 + (
+            ker[bjij[a]['amenamotik_num']]['y'] - bjij[a]['y']) ** 2 > 5:
         return True
     return False
+
 
 def create_new_bjij(px, py):
     bjij.append({})
@@ -69,7 +72,6 @@ def generate_ker():
 
 qweas = 1
 
-
 pygame.init()
 ker = []
 for i in range(20):
@@ -95,95 +97,80 @@ for i in range(10):
 win = pygame.display.set_mode((1000, 1000))
 pygame.display.set_caption("Game")
 background = pygame.image.load("img/background.jpg")
-bjij_img =pygame.image.load("img/bjij.png")
+bjij_img = pygame.image.load("img/bjij.png")
 ker_img = pygame.image.load("img/ker.png")
 run = True
 clock = pygame.time.Clock()
 e = 0
 
-
-
-
-
-
-
 while run:
-        joke = False
-        clock.tick(15)
-        generate_ker()
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
-        win.blit(background, (0, 0))
-        blit_ker()
-        s = True
+    joke = False
+    clock.tick(15)
+    generate_ker()
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            run = False
+    win.blit(background, (0, 0))
+    blit_ker()
+    s = True
 
-        if len(bjij) > 1:
-            has = 'o'
+    if len(bjij) > 1:
+        has = 'o'
 
-
-
-
-        bjij_speed = 0
-        for i in range(len(bjij)):
-            bjij_speed += bjij[i]['speed']
-        bjij_speed /= len(bjij)
-        print(bjij_speed)
-        for i in range(len(bjij)):
-            if joke is True:
-                win.blit(bjij_img, (bjij[i]['x'], bjij[i]['y']))
-                continue
-
+    bjij_speed = 0
+    for i in range(len(bjij)):
+        bjij_speed += bjij[i]['speed']
+    bjij_speed /= len(bjij)
+    print(bjij_speed)
+    for i in range(len(bjij)):
+        if joke is True:
             win.blit(bjij_img, (bjij[i]['x'], bjij[i]['y']))
-            h = False
-            if bjij[i]['amenamotik_x'] is None:
-                distance = 100000
-                number = 0
-                for d in range(len(ker)):
-                    o = math.sqrt((bjij[i]['x'] - ker[d]['x']) ** 2 + (bjij[i]['y'] - ker[d]['y']) ** 2)
-                    if o < distance:
-                        distance = o
-                        sin = (bjij[i]['x'] - ker[d]['x']) / distance
-                        cos = (bjij[i]['y'] - ker[d]['y']) / distance
-                        bjij[i]["amenamotik_x"] = sin
-                        bjij[i]["amenamotik_y"] = cos
-                        bjij[i]["distance"] = distance
-                        number = d
-                        bjij[i]['amenamotik_num'] = number
-            go_to(i)
-            if bjij[i]['distance'] <= 5:
-                if stugum(i):
-                    h = True
-                    b = bjij[i]['amenamotik_num']
-                    o = ker[b]
-                    bjij[i]['energy'] += o['energy']
+            continue
 
+        win.blit(bjij_img, (bjij[i]['x'], bjij[i]['y']))
+        h = False
+        if bjij[i]['amenamotik_x'] is None:
+            distance = 100000
+            number = 0
+            for d in range(len(ker)):
+                o = math.sqrt((bjij[i]['x'] - ker[d]['x']) ** 2 + (bjij[i]['y'] - ker[d]['y']) ** 2)
+                if o < distance:
+                    distance = o
+                    sin = (bjij[i]['x'] - ker[d]['x']) / distance
+                    cos = (bjij[i]['y'] - ker[d]['y']) / distance
+                    bjij[i]["amenamotik_x"] = sin
+                    bjij[i]["amenamotik_y"] = cos
+                    bjij[i]["distance"] = distance
+                    number = d
+                    bjij[i]['amenamotik_num'] = number
+        go_to(i)
+        if bjij[i]['distance'] <= 5:
+            if stugum(i):
+                h = True
+                b = bjij[i]['amenamotik_num']
+                o = ker[b]
+                bjij[i]['energy'] += o['energy']
 
+            delet = bjij[i]['amenamotik_num']
+            for j in range(len(bjij)):
+                bjij[j]['amenamotik_x'] = None
+                bjij[j]['amenamotik_y'] = None
+                bjij[j]['distance'] = None
+                bjij[j]['amenamotik_num'] = None
+            joke = True
 
-                delet = bjij[i]['amenamotik_num']
-                for j in range(len(bjij)):
-                    bjij[j]['amenamotik_x'] = None
-                    bjij[j]['amenamotik_y'] = None
-                    bjij[j]['distance'] = None
-                    bjij[j]['amenamotik_num'] = None
-                joke = True
+        bjij_energy(i)
+        if bjij[i]['energy'] <= 0:
+            s = i
 
+    if h is True:
+        bjij[i]['amenamotik_x'] = None
+        bjij[i]['amenamotik_y'] = None
+        bjij[i]['distance'] = None
+        bjij[i]['amenamotik_num'] = None
+        del ker[delet]
 
-
-            bjij_energy(i)
-            if bjij[i]['energy'] <= 0:
-                s = i
-
-
-
-        if h is True:
-            bjij[i]['amenamotik_x'] = None
-            bjij[i]['amenamotik_y'] = None
-            bjij[i]['distance'] = None
-            bjij[i]['amenamotik_num'] = None
-            del ker[delet]
-
-        if s is not True:
-            e += 1
-            del bjij[s]
-        pygame.display.update()
+    if s is not True:
+        e += 1
+        del bjij[s]
+    pygame.display.update()
