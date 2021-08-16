@@ -27,7 +27,7 @@ def bjij_energy(qwert):
     bjij[qwert]['energy'] -= 0.1
     if bjij[qwert]['energy'] >= 30:
         bjij[qwert]['energy'] /= 2
-        create_new_bjij(bjij[qwert]['x'] + 10, bjij[qwert]['y'] + 10)
+        create_new_bjij(bjij[qwert]['x'] + 10, bjij[qwert]['y'] + 10, bjij[qwert]['speed'])
         bjij[qwert]['amenamotik_x'] = None
         bjij[qwert]['amenamotik_y'] = None
         bjij[qwert]['distance'] = None
@@ -46,11 +46,14 @@ def stugum(a):
     return False
 
 
-def create_new_bjij(px, py):
+def create_new_bjij(px, py, pspeed):
     bjij.append({})
     bjij[-1]['x'] = px
     bjij[-1]['y'] = py
-    bjij[-1]['speed'] = random.randint(1, 10)
+    if random.random() > 0.5:
+        bjij[-1]['speed'] = pspeed + random.random()
+    else:
+        bjij[-1]['speed'] = pspeed - random.random()
     bjij[-1]['energy'] = random.randint(3, 4)
     bjij[-1]['amenamotik_x'] = None
     bjij[-1]['amenamotik_y'] = None
@@ -96,21 +99,18 @@ for i in range(10):
 
 win = pygame.display.set_mode((1000, 1000))
 pygame.display.set_caption("Game")
-background = pygame.image.load("img/background.jpg")
 bjij_img = pygame.image.load("img/bjij.png")
 ker_img = pygame.image.load("img/ker.png")
 run = True
 clock = pygame.time.Clock()
 e = 0
-
 while run:
     joke = False
-    clock.tick(15)
     generate_ker()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
-    win.blit(background, (0, 0))
+    win.fill((250, 250, 250))
     blit_ker()
     s = True
 
@@ -122,13 +122,12 @@ while run:
         bjij_speed += bjij[i]['speed']
     bjij_speed /= len(bjij)
     print(bjij_speed)
+    h = False
     for i in range(len(bjij)):
         if joke is True:
             win.blit(bjij_img, (bjij[i]['x'], bjij[i]['y']))
-            continue
 
         win.blit(bjij_img, (bjij[i]['x'], bjij[i]['y']))
-        h = False
         if bjij[i]['amenamotik_x'] is None:
             distance = 100000
             number = 0
@@ -169,6 +168,7 @@ while run:
         bjij[i]['distance'] = None
         bjij[i]['amenamotik_num'] = None
         del ker[delet]
+        h = False
 
     if s is not True:
         e += 1
