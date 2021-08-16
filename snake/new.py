@@ -16,6 +16,7 @@ def snake_blit():
     for pl in range(len(snake) - 1):
         win.blit(snake_img, (snake[pl]['x'], snake[pl]['y']))
 
+
 def snake_go():
     snake.append({})
     if direction % 2 == 0 and direction > 0:
@@ -33,13 +34,15 @@ def snake_go():
     if len(snake) > p:
         del snake[0]
 
+
 def ker_blit():
     win.blit(ker_img, (ker['x'], ker['y']))
 
+
 def dead():
     global run
-    for i in range(len(red)):
-        if snake[-1]['x'] == red[i]['x'] and snake[-1]['y'] == red[i]['y']:
+    for df in range(len(red)):
+        if snake[-1]['x'] == red[df]['x'] and snake[-1]['y'] == red[df]['y']:
             print('red')
             run = False
             print()
@@ -53,6 +56,7 @@ def dead():
             print('git')
             run = False
 
+
 def ker_stugum():
     global p, a
     if ker['x'] == snake[-1]['x'] and ker['y'] == snake[-1]['y']:
@@ -61,13 +65,13 @@ def ker_stugum():
             t = False
             ker['x'] = random.randrange(25, 671, 35)
             ker['y'] = random.randrange(25, 671, 35)
-            for i in range(len(snake)):
-                if snake[i]['x'] == ker['x'] and snake[i]['y'] == ker['y']:
+            for fgh in range(len(snake)):
+                if snake[fgh]['x'] == ker['x'] and snake[fgh]['y'] == ker['y']:
                     t = True
                     break
             if t is False:
-                for i in range(len(red)):
-                    if red[i]['x'] == ker['x'] and red[i]['x'] == ker['y']:
+                for vbn in range(len(red)):
+                    if red[vbn]['x'] == ker['x'] and red[vbn]['x'] == ker['y']:
                         t = True
                         break
         p += 1
@@ -78,6 +82,7 @@ def ker_stugum():
 def blit_red():
     for asd in range(len(red)):
         win.blit(red_img, (red[asd]['x'], red[asd]['y']))
+
 
 pygame.init()
 win = pygame.display.set_mode((705, 705))
@@ -120,7 +125,6 @@ while run:
         direction = -1
     if keys[pygame.K_DOWN]:
         direction = 1
-
 
     if time.process_time() - a > last_time:
         dead()
