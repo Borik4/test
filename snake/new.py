@@ -2,10 +2,6 @@ import pygame
 import time
 import random
 
-def red_stugum():
-    for i in range(len(red)):
-        if snake[-1]['x'] == red[i]['x'] and snake[-1]['y'] == red[i]['y']:
-            run = False
 
 def snake_blit():
     if direction == 1:
@@ -44,11 +40,17 @@ def dead():
     global run
     for i in range(len(red)):
         if snake[-1]['x'] == red[i]['x'] and snake[-1]['y'] == red[i]['y']:
+            print('red')
             run = False
+            print()
+            print(red)
+            print(snake[-1])
     if 670 < snake[-1]['x'] or snake[-1]['x'] < 0 or 670 < snake[-1]['y'] or snake[-1]['y'] < 0:
+        print('durs')
         run = False
     for wer in range(len(snake) - 1):
         if snake[wer]['x'] == snake[-1]['x'] and snake[wer]['y'] == snake[-1]['y']:
+            print('git')
             run = False
 
 def ker_stugum():
@@ -108,6 +110,7 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
+            print('quit')
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT]:
         direction = -2
@@ -129,4 +132,3 @@ while run:
         pygame.display.update()
         last_time = time.process_time()
         ker_stugum()
-        red_stugum()
